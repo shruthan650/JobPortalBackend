@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
+@Document(collection = "UserRepo")
 public class User {
 
 	@Id
-	private Integer id;
+	private String id;
 	private String name;
 	private String email;
 	private String password;
