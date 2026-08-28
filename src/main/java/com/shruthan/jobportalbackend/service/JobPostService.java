@@ -1,19 +1,27 @@
 package com.shruthan.jobportalbackend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.shruthan.jobportalbackend.model.JobPost;
 import com.shruthan.jobportalbackend.repository.JobPostRepository;
 
-@Component
+@Service
 public class JobPostService {
 	
 	@Autowired
 	JobPostRepository jobPostRepository;
 
 	public JobPost addJob(JobPost job) {
+		
+		if (job.getCreatedAt() == null) {
+			job.setCreatedAt(LocalDateTime.now());
+		}
+		
 		return jobPostRepository.save(job);
 	}
 

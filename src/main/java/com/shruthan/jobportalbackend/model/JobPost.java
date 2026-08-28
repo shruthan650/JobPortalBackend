@@ -1,6 +1,8 @@
 package com.shruthan.jobportalbackend.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,5 +26,5 @@ public class JobPost {
 	private String location;
 	private BigDecimal salary;
 	private Integer companyId;
-	private Date createdAt;
+	private LocalDateTime createdAt = LocalDateTime.now();
 }
