@@ -1,7 +1,9 @@
 package com.shruthan.jobportalbackend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shruthan.jobportalbackend.model.Application;
@@ -10,6 +12,7 @@ import com.shruthan.jobportalbackend.repository.ApplicationRepository;
 @Service
 public class ApplicationService {
 	
+	@Autowired
 	ApplicationRepository applicationRepository;
 
 	public List<Application> getAllApplications() {
@@ -17,6 +20,10 @@ public class ApplicationService {
 	}
 
 	public Application addApplication(Application application) {
+		
+		if (application.getAppliedAt() != null) {
+			application.setAppliedAt(LocalDateTime.now());
+		}
 		return applicationRepository.save(application);
 	}
 
