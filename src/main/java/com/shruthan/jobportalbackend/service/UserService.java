@@ -3,18 +3,20 @@ package com.shruthan.jobportalbackend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.shruthan.jobportalbackend.model.Company;
 import com.shruthan.jobportalbackend.model.User;
-import com.shruthan.jobportalbackend.repository.CompanyRepository;
 import com.shruthan.jobportalbackend.repository.UserRepository;
+import com.shruthan.jobportalbackend.security.CustomUserDetails;
 
 @Service
 public class UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	CustomUserDetails customUserDetails;
 
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -34,6 +36,16 @@ public class UserService {
 
 	public void deleteUserById(String id) {
 		userRepository.deleteById(id);
+	}
+	
+	public CustomUserDetails findUserByEmail(String email) {
+		
+		User requiredUser = userRepository.findByEmail(email);
+		
+		if (requiredUser != null) 
+			return new CustomUserDetails(requiredUser);
+		else 
+			throw new UsernameNotFoundException("No email id with " + email + " is found");
 	}
 
 }
