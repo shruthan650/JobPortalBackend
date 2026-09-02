@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shruthan.jobportalbackend.model.User;
 import com.shruthan.jobportalbackend.service.UserService;
 
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -27,22 +26,22 @@ public class UserController {
 	public List<User> getAllUsers() {
 		return service.getAllUsers();
 	}
-	
+
 	@PostMapping("/user")
 	public User addUser(@RequestBody User user) {
 		return service.addUser(user);
 	}
-	
+
 	@GetMapping("/user/{id}")
 	public User getUserById(@PathVariable String id) {
 		return service.getUserById(id);
 	}
-	
+
 	@PutMapping("/user/{id}")
 	public void updateUserById(@RequestBody User user, @PathVariable String id) {
 		service.updateUserById(user, id);
 	}
-	
+
 	@DeleteMapping("/user/{id}")
 	public void deleteUserById(@PathVariable String id) {
 		service.deleteUserById(id);

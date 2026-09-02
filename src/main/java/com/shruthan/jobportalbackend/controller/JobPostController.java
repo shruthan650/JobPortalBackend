@@ -18,16 +18,16 @@ import com.shruthan.jobportalbackend.service.JobPostService;
 @RestController
 @RequestMapping("/api")
 public class JobPostController {
-	
+
 	@Autowired
 	JobPostService service;
-	
+
 	@GetMapping("/greet")
 	public String greet() {
 		return "Welcome to JobPortal";
 	}
 
-	@PostMapping("/jobs")
+	@PostMapping("/job")
 	public JobPost addJob(@RequestBody JobPost job) {
 		return service.addJob(job);
 	}
@@ -37,12 +37,12 @@ public class JobPostController {
 		return service.getAllJobs();
 	}
 
-	@GetMapping("/jobs/{id}")
+	@GetMapping("/job/{id}")
 	public JobPost getJobById(@PathVariable String id) {
 		return service.getJobById(id);
 	}
 
-	@PutMapping("/jobs/{id}")
+	@PutMapping("/job/{id}")
 	public void updateJobById(@PathVariable String id, @RequestBody JobPost job) {
 		service.updateJobById(id, job);
 	}

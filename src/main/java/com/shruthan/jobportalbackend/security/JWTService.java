@@ -29,8 +29,13 @@ public class JWTService {
 	}
 
 	public String generateToken(String username) {
-		return Jwts.builder().subject(username).expiration(new Date(System.currentTimeMillis() + 10 * 60 * 60 * 1000))
-				.signWith(sk).compact();
+		return Jwts
+					.builder()
+					.subject(username)
+					.issuedAt(new Date(System.currentTimeMillis()))
+					.expiration(new Date(System.currentTimeMillis() + 10 * 60 * 60 * 1000))
+					.signWith(sk)
+					.compact();
 	}
 
 	public String extractUserName(String token) {
