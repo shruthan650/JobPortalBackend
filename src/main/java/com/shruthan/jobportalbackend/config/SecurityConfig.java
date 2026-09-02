@@ -38,10 +38,41 @@ public class SecurityConfig {
 
 		return http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers("/api/greet", "/api/login", "/api/user")
+						authorize -> authorize.requestMatchers(
+								"/api/greet",
+								"/api/login",
+								"/api/jobs"
+						)
 						.permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/jobs")
+						
+						.requestMatchers(
+								HttpMethod.POST,
+								"/api/user"
+								)
+						.permitAll()
+						
+						.requestMatchers(
+								"/api/users",
+								"/api/user/**",
+								"/api/companies",
+								"/api/applications"
+						)
+						.hasRole("ADMIN")
+						
+						.requestMatchers(
+								"/api/job",
+								"/api/job/**",
+								"/api/company",
+								"/api/company/**"
+						)
 						.hasRole("RECRUITER")
+						
+						.requestMatchers(
+								"/api/application",
+								"/api/application/**"
+						)
+						.hasRole("CANDIDATE")
+						
 						.anyRequest()
 						.authenticated()
 				)
