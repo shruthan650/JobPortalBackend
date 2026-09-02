@@ -3,6 +3,7 @@ package com.shruthan.jobportalbackend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class UserController {
 	UserService service;
 
 	@GetMapping("/users")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<User> getAllUsers() {
 		return service.getAllUsers();
 	}
@@ -33,16 +35,19 @@ public class UserController {
 	}
 
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public User getUserById(@PathVariable String id) {
 		return service.getUserById(id);
 	}
 
 	@PutMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void updateUserById(@RequestBody User user, @PathVariable String id) {
 		service.updateUserById(user, id);
 	}
 
 	@DeleteMapping("/user/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void deleteUserById(@PathVariable String id) {
 		service.deleteUserById(id);
 	}
