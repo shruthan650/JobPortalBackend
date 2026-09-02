@@ -3,6 +3,7 @@ package com.shruthan.jobportalbackend.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,27 +27,33 @@ public class SecurityConfig {
 	
 	@Autowired
 	JWTFilter jwtFilter;
+	
+	@Autowired
+	PasswordConfig passwordConfig;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+		
+		System.out.println("Control in securityFilterChain method");
 
 		return http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers("/api/greet", "/api/login").permitAll().anyRequest().authenticated())
+						authorize -> authorize.requestMatchers("/api/greet", "/api/login", "/api/user")
+						.permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/jobs")
+						.hasRole("RECRUITER")
+						.anyRequest()
+						.authenticated()
+				)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(customUserDetailsService);
-		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		daoAuthenticationProvider.setPasswordEncoder(passwordConfig.passwordEncoder());
 		
 		return daoAuthenticationProvider;
 	}
