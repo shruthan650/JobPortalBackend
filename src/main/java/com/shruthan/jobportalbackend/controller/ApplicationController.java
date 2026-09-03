@@ -36,19 +36,19 @@ public class ApplicationController {
 	}
 	
 	@GetMapping("/application/{id}")
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'RECRUITER')")
+	@PreAuthorize(value = "hasAnyRole('ADMIN') or @SecurityService.isOwner(#id)")
 	public Application getApplicationById(@PathVariable String id) {
 		return service.getApplicationById(id);
 	}
 	
 	@PutMapping("/application/{id}")
-	@PreAuthorize(value = "hasRole('ADMIN')")
+	@PreAuthorize(value = "hasRole('ADMIN') or @SecurityService.isOwner(#id)")
 	public void updateApplicationById(@RequestBody Application application, @PathVariable String id) {
 		service.updateApplicationById(application, id);
 	}
 	
 	@DeleteMapping("/application/{id}")
-	@PreAuthorize(value = "hasRole('ADMIN')")
+	@PreAuthorize(value = "hasRole('ADMIN') or @SecurityService.isOwner(#id)")
 	public void deleteApplicationById(@PathVariable String id) {
 		service.deleteApplicationById(id);
 	}
