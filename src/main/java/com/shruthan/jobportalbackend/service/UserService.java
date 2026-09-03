@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.shruthan.jobportalbackend.config.PasswordConfig;
+import com.shruthan.jobportalbackend.exception.InvalidInputException;
+import com.shruthan.jobportalbackend.exception.ResourceNotFoundException;
 import com.shruthan.jobportalbackend.model.User;
 import com.shruthan.jobportalbackend.repository.UserRepository;
 import com.shruthan.jobportalbackend.security.CustomUserDetails;
@@ -38,14 +40,34 @@ public class UserService {
 	}
 
 	public User getUserById(String id) {
-		return userRepository.findById(id).orElse(null);
+		User user = userRepository.findById(id).orElse(null);
+		
+		if (user == null) {
+			throw new ResourceNotFoundException("User Not Found");
+		}
+		
+		return user;
 	}
 
 	public void updateUserById(User user, String id) {
+		
+		if (!user.getId().equals(id)) {
+			throw new InvalidInputException("User Id and input object Id doesn,t match");
+		}
+		
+		if (userRepository.findById(id).isEmpty()) {
+			throw new ResourceNotFoundException("User Not Found");
+		}
+		
 		userRepository.save(user);
 	}
 
 	public void deleteUserById(String id) {
+		
+		if (userRepository.findById(id).isEmpty()) {
+			throw new ResourceNotFoundException("User Not Found");
+		}
+		
 		userRepository.deleteById(id);
 	}
 	

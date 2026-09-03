@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.shruthan.jobportalbackend.exception.InvalidInputException;
+import com.shruthan.jobportalbackend.exception.ResourceNotFoundException;
 import com.shruthan.jobportalbackend.model.JobPost;
 import com.shruthan.jobportalbackend.repository.JobPostRepository;
 
@@ -30,17 +32,37 @@ public class JobPostService {
 	}
 
 	public JobPost getJobById(String id) {
-		return jobPostRepository.findById(id).orElse(null);
+		
+		JobPost jobPost = jobPostRepository.findById(id).orElse(null);
+		
+		if (jobPost == null) {
+			throw new ResourceNotFoundException("Job Not Found");
+		}
+		
+		return jobPost;
 	}
 
 	public void updateJobById(String id, JobPost job) {
+		
+		if (!job.getId().equals(id)) {
+			throw new InvalidInputException("Job Id and input object Id doesn,t match");
+		}
+		
+		if (jobPostRepository.findById(id).isEmpty()) {
+			throw new ResourceNotFoundException("Job Application Not Found");
+		}
+		
 		jobPostRepository.save(job);
 		
 	}
 
 	public void deleteJobById(String id) {
-		jobPostRepository.deleteById(id);
 		
+		if (jobPostRepository.findById(id).isEmpty()) {
+			throw new ResourceNotFoundException("Job Application Not Found");
+		}
+		
+		jobPostRepository.deleteById(id);
 	}
 
 }
