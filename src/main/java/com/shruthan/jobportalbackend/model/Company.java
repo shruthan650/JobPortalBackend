@@ -19,5 +19,6 @@ public class Company {
 	private String description;
 	private String location;
 	private String website;
+	private String recruiterId;
 
 }

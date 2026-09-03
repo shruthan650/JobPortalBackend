@@ -25,6 +25,7 @@ public class JobPost {
 	private String[] technologies;
 	private String location;
 	private BigDecimal salary;
-	private Integer companyId;
+	private String companyId;
+	private String recruiterId;
 	private LocalDateTime createdAt = LocalDateTime.now();
 }
