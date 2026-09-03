@@ -36,19 +36,19 @@ public class CompanyController {
 	}
 	
 	@GetMapping("/company/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isCompanyOwner(#id))")
 	public Company getCompanyById(@PathVariable String id) {
 		return service.getCompanyById(id);
 	}
 	
 	@PutMapping("/company/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isCompanyOwner(#id))")
 	public void updateCompanyById(@RequestBody Company company, @PathVariable String id) {
 		service.updateCompanyById(company, id);
 	}
 	
 	@DeleteMapping("/company/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isCompanyOwner(#id))")
 	public void deleteCompanyById(@PathVariable String id) {
 		service.deleteCompanyById(id);
 	}

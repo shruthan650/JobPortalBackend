@@ -40,19 +40,19 @@ public class JobPostController {
 	}
 
 	@GetMapping("/job/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isJobOwner(#id))")
 	public JobPost getJobById(@PathVariable String id) {
 		return service.getJobById(id);
 	}
 
 	@PutMapping("/job/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isJobOwner(#id))")
 	public void updateJobById(@PathVariable String id, @RequestBody JobPost job) {
 		service.updateJobById(id, job);
 	}
 
-	@DeleteMapping("/jobs/{id}")
-	@PreAuthorize("hasRole('RECRUITER')")
+	@DeleteMapping("/job/{id}")
+	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isJobOwner(#id))")
 	public void deleteJobById(@PathVariable String id) {
 		service.deleteJobById(id);
 	}
