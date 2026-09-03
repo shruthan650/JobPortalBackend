@@ -21,7 +21,7 @@ public class ApplicationService {
 
 	public Application addApplication(Application application) {
 		
-		if (application.getAppliedAt() != null) {
+		if (application.getAppliedAt() == null) {
 			application.setAppliedAt(LocalDateTime.now());
 		}
 		return applicationRepository.save(application);
