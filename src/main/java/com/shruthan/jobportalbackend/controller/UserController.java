@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shruthan.jobportalbackend.model.User;
 import com.shruthan.jobportalbackend.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -30,6 +32,7 @@ public class UserController {
 	}
 
 	@PostMapping("/user")
+	@Valid
 	public User addUser(@RequestBody User user) {
 		return service.addUser(user);
 	}
@@ -41,7 +44,8 @@ public class UserController {
 	}
 
 	@PutMapping("/user/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or SecurityService.isSameUser(#id)")
+	@Valid
 	public void updateUserById(@RequestBody User user, @PathVariable String id) {
 		service.updateUserById(user, id);
 	}

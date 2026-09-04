@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shruthan.jobportalbackend.model.JobPost;
 import com.shruthan.jobportalbackend.service.JobPostService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class JobPostController {
@@ -30,6 +32,7 @@ public class JobPostController {
 
 	@PostMapping("/job")
 	@PreAuthorize("hasRole('RECRUITER')")
+	@Valid
 	public JobPost addJob(@RequestBody JobPost job) {
 		return service.addJob(job);
 	}
@@ -47,6 +50,7 @@ public class JobPostController {
 
 	@PutMapping("/job/{id}")
 	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isJobOwner(#id))")
+	@Valid
 	public void updateJobById(@PathVariable String id, @RequestBody JobPost job) {
 		service.updateJobById(id, job);
 	}

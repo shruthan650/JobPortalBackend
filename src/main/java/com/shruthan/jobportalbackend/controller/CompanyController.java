@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shruthan.jobportalbackend.model.Company;
 import com.shruthan.jobportalbackend.service.CompanyService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class CompanyController {
@@ -31,6 +33,7 @@ public class CompanyController {
 	
 	@PostMapping("/company")
 	@PreAuthorize("hasRole('RECRUITER')")
+	@Valid
 	public Company addCompany(@RequestBody Company company) {
 		return service.addCompany(company);
 	}
@@ -43,6 +46,7 @@ public class CompanyController {
 	
 	@PutMapping("/company/{id}")
 	@PreAuthorize("hasRole('ADMIN') or (hasRole('RECRUITER') and @SecurityService.isCompanyOwner(#id))")
+	@Valid
 	public void updateCompanyById(@RequestBody Company company, @PathVariable String id) {
 		service.updateCompanyById(company, id);
 	}

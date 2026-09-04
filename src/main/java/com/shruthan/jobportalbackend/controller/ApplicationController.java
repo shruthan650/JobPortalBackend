@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.shruthan.jobportalbackend.model.Application;
 import com.shruthan.jobportalbackend.service.ApplicationService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class ApplicationController {
@@ -31,6 +33,7 @@ public class ApplicationController {
 	
 	@PostMapping("/application")
 	@PreAuthorize(value = "hasAnyRole('CANDIDATE')")
+	@Valid
 	public Application addApplication(@RequestBody Application application) {
 		return service.addApplication(application);
 	}
@@ -43,6 +46,7 @@ public class ApplicationController {
 	
 	@PutMapping("/application/{id}")
 	@PreAuthorize(value = "hasRole('ADMIN') or @SecurityService.isApplicationOwner(#id)")
+	@Valid
 	public void updateApplicationById(@RequestBody Application application, @PathVariable String id) {
 		service.updateApplicationById(application, id);
 	}
