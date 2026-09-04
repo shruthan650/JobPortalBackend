@@ -2,6 +2,8 @@ package com.shruthan.jobportalbackend.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,8 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+	
 	CustomUserDetails customUserDetails;
 
 	UserService(PasswordConfig passwordConfig) {
@@ -30,6 +34,7 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
+		logger.info("All users fetched");
 		return userRepository.findAll();
 	}
 
@@ -43,6 +48,7 @@ public class UserService {
 		User user = userRepository.findById(id).orElse(null);
 		
 		if (user == null) {
+			logger.debug("ResourceNotFoundException thrown from getUserById service");
 			throw new ResourceNotFoundException("User Not Found");
 		}
 		
@@ -52,10 +58,12 @@ public class UserService {
 	public void updateUserById(User user, String id) {
 		
 		if (!user.getId().equals(id)) {
-			throw new InvalidInputException("User Id and input object Id doesn,t match");
+			logger.debug("InvalidInputException thrown from updateUserById service");
+			throw new InvalidInputException("User Id and input object Id doesn't match");
 		}
 		
 		if (userRepository.findById(id).isEmpty()) {
+			logger.debug("ResourceNotFoundException thrown from updateUserById service");
 			throw new ResourceNotFoundException("User Not Found");
 		}
 		
@@ -65,6 +73,7 @@ public class UserService {
 	public void deleteUserById(String id) {
 		
 		if (userRepository.findById(id).isEmpty()) {
+			logger.debug("ResourceNotFoundException thrown from deleteUserById service");
 			throw new ResourceNotFoundException("User Not Found");
 		}
 		
@@ -77,8 +86,11 @@ public class UserService {
 		
 		if (requiredUser != null) 
 			return new CustomUserDetails(requiredUser);
-		else 
+		else {
+			logger.debug("UserNameNotFoundException thrown from findUserByEmail service");
 			throw new UsernameNotFoundException("No email id with " + email + " is found");
+			
+		}
 	}
 
 }
