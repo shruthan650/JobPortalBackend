@@ -35,8 +35,6 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-		
-		System.out.println("Control in securityFilterChain method");
 
 		return http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(
