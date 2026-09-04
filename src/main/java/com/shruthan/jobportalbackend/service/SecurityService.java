@@ -94,4 +94,25 @@ public class SecurityService {
 
 		return (user.getId().equals(company.get().getRecruiterId()));
 	}
+	
+	public boolean isSameUser(String userId) {
+
+		Optional<User> userDb = userRepository.findById(userId);
+
+		if (userDb.isEmpty()) {
+			return false;
+		}
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		String email = authentication.getName();
+
+		User user = userRepository.findByEmail(email);
+
+		if (user == null) {
+			return false;
+		}
+
+		return (user.getId().equals(userDb.get().getId()));
+	}
 }
